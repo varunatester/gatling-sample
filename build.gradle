@@ -1,0 +1,18 @@
+defaultTasks 'clean', 'build'
+
+apply plugin: 'scala'
+
+version = '1.0'
+
+repositories {
+    mavenCentral()
+    // Gatling dependencies
+    maven { url 'http://repository.excilys.com/content/groups/public' }
+}
+
+
+dependencies {
+    // Gatling dependencies
+    compile 'io.gatling:gatling-app:2.0.0-RC2'
+    compile 'io.gatling.highcharts:gatling-charts-highcharts:2.0.0-RC2'
+}
