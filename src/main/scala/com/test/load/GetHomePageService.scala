@@ -1,20 +1,17 @@
 package com.test.load
-
 import io.gatling.core.Predef._
 import io.gatling.http.Predef._
-
-
 object GetHomePageService {
 
-  val homePageActions = scenario("Medium Home Page")
+  val homePageSignInActions = scenario("Medium Home Page")
     .exec(flushSessionCookies)
     .exec(
-      http("view medium home page")
+      http("View Medium Home Page")
         .get("/")
         .check(status.is(200))
     )
     .exec(
-      http("sign in")
+      http("Medium Sign in Page")
         .post("_/batch")
         .header("Content-Type", "application/json")
         .header("Accept", "application/json")
