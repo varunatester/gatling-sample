@@ -1,16 +1,16 @@
 package com.test.load
-import scala.concurrent.duration._
 import io.gatling.core.Predef._
 import com.test.load.GetHomePageService.homePageSignInActions
 
 class HomePageSimulation extends ServiceSimulation {
 
   setUp(
-    homePageSignInActions.inject(rampUsers(10) over (30 seconds))
+    homePageSignInActions.inject(rampUsers(10).during(10))
   ).protocols(httpConf)
-    .assertions(global.successfulRequests.percent.greaterThan(90),
-      global.responseTime.percentile1.lessThan(1000),
-      global.responseTime.mean.lessThan(1000))
+    .assertions(global.successfulRequests.percent.gt(90),
+      global.responseTime.percentile1.lt(1000),
+      global.responseTime.mean.lt(1000))
 
-  //setUp(homePageSignInActions.inject(atOnceUsers(10)))
+//  setUp(homePageSignInActions.inject(atOnceUsers(10)))
+ // setUp(homePageSignInActions.inject( constantUsersPerSec(10).during(15)))
 }

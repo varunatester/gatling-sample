@@ -1,7 +1,7 @@
 # Introduction 
 A sample project to simulate performance of api's using http and websocket platform
 # Getting Started
-Java 8 JDK
+Java 17 JDK
 gradle 3.1 or above
 Scala SDK
 IDE : Intellij
