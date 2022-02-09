@@ -13,7 +13,7 @@ import scala.language.postfixOps
 class AddProductSimulation extends Simulation {
 
   val httpConf: HttpProtocolBuilder = http
-    .baseUrl("https://juice-shop.herokuapp.com/")
+    .baseUrl("http://192.168.64.2:3000/")
     .acceptLanguageHeader("en-US,en;q=0.5")
     .acceptEncodingHeader("gzip, deflate")
     .userAgentHeader("Mozilla/5.0 (Windows NT 5.1; rv:31.0) Gecko/20100101 Firefox/31.0")
@@ -33,20 +33,19 @@ class AddProductSimulation extends Simulation {
           .header("Authorization", "Bearer " + "${token}")
           .check(status.is(200))
           .check(jsonPath("$.data[8].id").saveAs("productId")))
-        .pause(5)
 
-        .exec(http("Add First Product To Basket")
-          .post("api/BasketItems/")
+        .pause(5)
+        .exec(http("Add Review To Product")
+          .post("rest/products/1/reviews")
           .header("Authorization", "Bearer " + "${token}")
-          .body(StringBody("{\"ProductId\":${productId},\"BasketId\":\"${bid}\",\"quantity\":1}")).asJson
-          .check(status.is(200)))
+          .body(StringBody("{\"message\": \"New\",\"author\": \"Anonymous\"}")).asJson
+          .check(status.is(201)))
     }
   }
 
 
   val scn: ScenarioBuilder = scenario("Add Product to Cart Simulation")
     .exec(addProductToCart())
-
 
   setUp(
     scn.inject(
