@@ -1,11 +1,8 @@
 package com.test.juiceshop
-
-
 import io.gatling.core.Predef._
 import io.gatling.core.structure.{ChainBuilder, ScenarioBuilder}
 import io.gatling.http.Predef._
 import io.gatling.http.protocol.HttpProtocolBuilder
-
 import scala.concurrent.duration._
 import scala.language.postfixOps
 
@@ -17,6 +14,9 @@ class AddProductSimulation extends Simulation {
     .acceptLanguageHeader("en-US,en;q=0.5")
     .acceptEncodingHeader("gzip, deflate")
     .userAgentHeader("Mozilla/5.0 (Windows NT 5.1; rv:31.0) Gecko/20100101 Firefox/31.0")
+
+  val scn: ScenarioBuilder = scenario("Add Product to Cart Simulation")
+    .exec(addProductToCart())
 
   def addProductToCart(): ChainBuilder = {
     repeat(1) {
@@ -31,21 +31,14 @@ class AddProductSimulation extends Simulation {
         .exec(http("Get All Products")
           .get("rest/products/search?q=")
           .header("Authorization", "Bearer " + "${token}")
-          .check(status.is(200))
+          .check(status.is(201))
           .check(jsonPath("$.data[8].id").saveAs("productId")))
 
-        .pause(5)
-        .exec(http("Add Review To Product")
-          .post("rest/products/1/reviews")
-          .header("Authorization", "Bearer " + "${token}")
-          .body(StringBody("{\"message\": \"New\",\"author\": \"Anonymous\"}")).asJson
-          .check(status.is(201)))
+
     }
   }
 
 
-  val scn: ScenarioBuilder = scenario("Add Product to Cart Simulation")
-    .exec(addProductToCart())
 
   setUp(
     scn.inject(

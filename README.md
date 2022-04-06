@@ -9,6 +9,8 @@ Intellij Scala Plugin
 
 
 # Build and Test
-Run test using command ./gradlew loadSmokeTests 
+Run test using command line ./gradlew loadSmokeTests 
 
-# Contribute
+# Let's contribute
+1. Fix AddProductSimulation
+2. Add Review Product tests
